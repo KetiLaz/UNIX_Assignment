@@ -10,7 +10,7 @@ DNAseq = input("Give me your DNA sequence:\n").upper()
 
 orf = []
 
-
+# Check if the user is actually giving a DNA sequence
 def check_sequence():
     for char in DNAseq:
         if char not in 'ATGC':
@@ -19,13 +19,15 @@ def check_sequence():
         else:
            return True 
 
+# Find the start codon in the sequence
 def find_start_codon():
     if check_sequence() == True:
-        for i in range(0, len(DNAseq)):
+        for i in range(0, len(DNAseq) - 3):
             if(DNAseq[i : i+3] == 'ATG'):
                 return i+3
                 break
-    
+ 
+# If there is a start codon (start_codon_ending is not None) append triplets in the empty orf    
 def add_codons():
     if check_sequence() == True:
         start_codon_ending = find_start_codon() 
@@ -35,11 +37,12 @@ def add_codons():
                     codon = DNAseq[j:j+3]
                     orf.append(codon)
         else:
-            print("There is no ORF")
+            print("There isn't an ORF in this sequence. Either starting codon was not found or it was found at the end of the sequence")
     return orf
                     
-    
-def find_finish_codon():
+ 
+# If there is a stop codon, stop appending in the orf    
+def find_stop_codon():
     add_codons()
     for i in range(len(orf)):
         if 'TAA' in orf:
@@ -55,11 +58,11 @@ def find_finish_codon():
             print("The ORf is: {}".format(orf[:tag]))
             break
         else:
-            print("We don't have an ORF")
+            print("There isn't an ORF in this sequence. There is a starting codon, but not a stop codon")
             break
             
-
-find_finish_codon()
+        
+find_stop_codon()
         
 
 
